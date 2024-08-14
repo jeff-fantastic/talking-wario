@@ -1,0 +1,78 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://script/wario_listen.gd" type="Script" id=1]
+
+[sub_resource type="InputEventAction" id=1]
+action = "ui_select"
+
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 1 )
+
+[node name="main" type="Node"]
+
+[node name="gui" type="CanvasLayer" parent="."]
+
+[node name="center" type="CenterContainer" parent="gui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="panel" type="PanelContainer" parent="gui/center"]
+margin_left = 170.0
+margin_top = 140.0
+margin_right = 470.0
+margin_bottom = 340.0
+rect_min_size = Vector2( 300, 200 )
+
+[node name="sort" type="VBoxContainer" parent="gui/center/panel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 293.0
+margin_bottom = 193.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="text" type="Label" parent="gui/center/panel/sort"]
+margin_right = 286.0
+margin_bottom = 31.0
+text = "Press the button to start 
+recording your voice"
+align = 1
+
+[node name="input" type="OptionButton" parent="gui/center/panel/sort"]
+margin_top = 35.0
+margin_right = 286.0
+margin_bottom = 55.0
+
+[node name="record" type="Button" parent="gui/center/panel/sort"]
+margin_top = 59.0
+margin_right = 286.0
+margin_bottom = 79.0
+toggle_mode = true
+shortcut = SubResource( 2 )
+text = "Talk to Wario"
+
+[node name="text2" type="Label" parent="gui/center/panel/sort"]
+margin_top = 172.0
+margin_right = 286.0
+margin_bottom = 186.0
+size_flags_vertical = 10
+text = "Wario is not listening..."
+align = 1
+
+[node name="wario_listen" type="Node" parent="."]
+script = ExtResource( 1 )
+label_listening_path = NodePath("../gui/center/panel/sort/text2")
+input_spinner_path = NodePath("../gui/center/panel/sort/input")
+
+[node name="record" type="AudioStreamPlayer" parent="wario_listen"]
+bus = "AudioIn"
+
+[node name="playback" type="AudioStreamPlayer" parent="wario_listen"]
+bus = "Wario"
+
+[connection signal="item_selected" from="gui/center/panel/sort/input" to="wario_listen" method="_audio_input_selected" flags=3]
+[connection signal="toggled" from="gui/center/panel/sort/record" to="wario_listen" method="_on_button_press"]
