@@ -1,3 +1,4 @@
+# wario_listen.gd
 class_name WarioListen extends Node
 
 ## Handles Wario's listening pattern
@@ -7,6 +8,9 @@ const STR_LISTEN = [
 	"Wario is not listening...",
 	"Wario is listening..."
 ]
+
+signal wario_listening()
+signal wario_done(player)
 
 export (NodePath) var label_listening_path
 onready var label_listening : Label = get_node(label_listening_path)
@@ -37,12 +41,14 @@ func _on_button_press(toggle : bool) -> void:
 	if listening_state:
 		$record.stream = AudioStreamMicrophone.new()
 		$record.playing = true
+		emit_signal("wario_listening")
 	
 	# If inactive, play sound back to user
 	if !listening_state:
 		recording = effect.get_recording()
 		$playback.stream = recording
 		$playback.play()
+		emit_signal("wario_done", $playback)
 
 func _audio_input_selected(input : int) -> void:
 	# Set input

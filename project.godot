@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://script/actor.gd"
+}, {
 "base": "Node",
 "class": "WarioListen",
 "language": "GDScript",
 "path": "res://script/wario_listen.gd"
 } ]
 _global_script_class_icons={
+"Actor": "",
 "WarioListen": ""
 }
 
